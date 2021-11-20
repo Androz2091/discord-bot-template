@@ -8,5 +8,7 @@ declare namespace NodeJS {
         DB_PASSWORD: string;
 
         EMBED_COLOR: string;
+
+        ENVIRONMENT: string;
     }
 }
