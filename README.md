@@ -17,6 +17,6 @@ You can install and host this bot on your own server. Here are the main steps:
 * Install PM2 or another process manager to keep your bot alive.
 * You are done!
 
-## Bugs and reports
+## Bugs or questions
 
 If you have any issue or bug with this bot, you can contact me using Discord, `Androz#2091`.
