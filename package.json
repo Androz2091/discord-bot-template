@@ -7,6 +7,11 @@
   "dependencies": {
     "discord.js": "^13.3.1",
     "dotenv": "^10.0.0",
+    "node-fetch": "^2.6.6",
     "typeorm": "^0.2.41"
+  },
+  "devDependencies": {
+    "@types/node": "^16.11.9",
+    "@types/node-fetch": "^2.5.12"
   }
 }
