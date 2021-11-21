@@ -4,6 +4,9 @@
   "main": "dist/index.js",
   "author": "Androz2091 <androz2091@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "build": "tsc"
+  },
   "dependencies": {
     "discord.js": "^13.3.1",
     "dotenv": "^10.0.0",

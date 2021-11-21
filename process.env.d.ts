@@ -9,6 +9,10 @@ declare namespace NodeJS {
 
         EMBED_COLOR: string;
 
+        COMMAND_PREFIX: string;
+
+        GUILD_ID: string|undefined;
+
         ENVIRONMENT: string;
     }
 }
