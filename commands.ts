@@ -75,17 +75,21 @@ export const loadSlashCommands = (client: Client) => {
     const commands = new Collection<string, SlashCommandRunFunction>();
     const commandsData: APIApplicationCommand[] = [];
     
-    readdirSync(`${__dirname}/commands`).forEach(file => {
-        if (file.endsWith('.js')) {
-            const command = require(`${__dirname}/commands/${file}`);
-            if (!command.commands) return console.log(`${file} has no commands`);
-            commandsData.push(...command.commands);
-            command.commands.forEach((commandData: APIApplicationCommand) => {
-                commands.set(commandData.name, command.run);
-                console.log(`Loaded slash command ${commandData.name}`);
-            });
-        }
-    });
+    try {
+        readdirSync(`${__dirname}/commands`).forEach(file => {
+            if (file.endsWith('.js')) {
+                const command = require(`${__dirname}/commands/${file}`);
+                if (!command.commands) return console.log(`${file} has no commands`);
+                commandsData.push(...command.commands);
+                command.commands.forEach((commandData: APIApplicationCommand) => {
+                    commands.set(commandData.name, command.run);
+                    console.log(`Loaded slash command ${commandData.name}`);
+                });
+            }
+        });
+    } catch {
+        console.log(`No slash commands found`);
+    }
 
     synchronizeSlashCommands(client, commandsData, {
         debug: true,
@@ -98,16 +102,20 @@ export const loadSlashCommands = (client: Client) => {
 export const loadMessageCommands = (client: Client) => {
     const commands = new Collection<string, MessageCommandRunFunction>();
     
-    readdirSync(`${__dirname}/commands`).forEach(file => {
-        if (file.endsWith('.js')) {
-            const command = require(`${__dirname}/commands/${file}`);
-            if (!command.commands) return console.log(`${file} has no commands`);
-            command.commands.forEach((commandName: string) => {
-                commands.set(commandName, command.run);
-                console.log(`Loaded message command ${commandName}`);
-            });
-        }
-    });
+    try {
+        readdirSync(`${__dirname}/commands`).forEach(file => {
+            if (file.endsWith('.js')) {
+                const command = require(`${__dirname}/commands/${file}`);
+                if (!command.commands) return console.log(`${file} has no commands`);
+                command.commands.forEach((commandName: string) => {
+                    commands.set(commandName, command.run);
+                    console.log(`Loaded message command ${commandName}`);
+                });
+            }
+        });
+    } catch {
+        console.log(`No message commands found`);
+    }
 
     return commands;
 };
