@@ -76,7 +76,7 @@ export const loadSlashCommands = (client: Client) => {
     const commandsData: APIApplicationCommand[] = [];
     
     try {
-        readdirSync(`${__dirname}/commands`).forEach(file => {
+        readdirSync(`${__dirname}/slash-commands`).forEach(file => {
             if (file.endsWith('.js')) {
                 const command = require(`${__dirname}/slash-commands/${file}`);
                 if (!command.commands) return console.log(`${file} has no commands`);
