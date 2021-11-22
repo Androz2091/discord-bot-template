@@ -34,6 +34,7 @@ All configuration for this template can be made in the `.env` file found in the 
 `GUILD_ID:` This is optional. In the case that your bot runs on a private server, it should be the ID of the server. Otherwise, leave empty (if this field is filled, it will be faster to create Slash Commands).
   
 `ENVIRONMENT:` Can be `ENVIRONMENT` or `PRODUCTION`. Defines whether some scripts or things should be run or not. For example, the database schemas will not be modified in production, even to synchronize them, because we may loose data.
+
 ## Bugs or questions
 
 If you have any issue or bug with this bot, you can contact me using Discord, `Androz#2091`.
