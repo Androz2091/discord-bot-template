@@ -1,5 +1,5 @@
 import { APIApplicationCommand } from "discord-api-types";
-import { Client, ApplicationCommand, ApplicationCommandData, CommandInteraction, Message } from "discord.js";
+import { Client, ApplicationCommand, ApplicationCommandData, CommandInteraction, Message, ChatInputApplicationCommandData } from "discord.js";
 import { Collection } from '@discordjs/collection';
 import { readdirSync } from "fs";
 
@@ -8,7 +8,7 @@ interface SynchronizeSlashCommandOptions {
     debug?: boolean;
 }
 
-export const synchronizeSlashCommands = async (client: Client, commands: APIApplicationCommand[], options: SynchronizeSlashCommandOptions = {}) => {
+export const synchronizeSlashCommands = async (client: Client, commands: ChatInputApplicationCommandData[], options: SynchronizeSlashCommandOptions = {}) => {
 
     const log = (message: string) => options.debug && console.log(message);
 
@@ -73,7 +73,7 @@ interface MessageCommandRunFunction {
 
 export const loadSlashCommands = (client: Client) => {
     const commands = new Collection<string, SlashCommandRunFunction>();
-    const commandsData: APIApplicationCommand[] = [];
+    const commandsData: ChatInputApplicationCommandData[] = [];
     
     try {
         readdirSync(`${__dirname}/slash-commands`).forEach(file => {
@@ -81,7 +81,7 @@ export const loadSlashCommands = (client: Client) => {
                 const command = require(`${__dirname}/slash-commands/${file}`);
                 if (!command.commands) return console.log(`${file} has no commands`);
                 commandsData.push(...command.commands);
-                command.commands.forEach((commandData: APIApplicationCommand) => {
+                command.commands.forEach((commandData: ChatInputApplicationCommandData) => {
                     commands.set(commandData.name, command.run);
                     console.log(`Loaded slash command ${commandData.name}`);
                 });
