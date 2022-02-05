@@ -1,4 +1,5 @@
 import { CommandInteraction } from "discord.js";
+import { SlashCommandRunFunction } from "../commands";
 
 export const commands = [
     {
@@ -7,7 +8,7 @@ export const commands = [
     }
 ];
 
-export const run = async (interaction: CommandInteraction) => {
+export const run: SlashCommandRunFunction = async (interaction) => {
 
     interaction.reply(`🏓 Pong! My latency is currently \`${interaction.client.ws.ping}ms\`.`);
     

@@ -63,11 +63,11 @@ export const synchronizeSlashCommands = async (client: Client, commands: ChatInp
 
 };
 
-interface SlashCommandRunFunction {
+export interface SlashCommandRunFunction {
     (interaction: CommandInteraction, commandName: string): void;
 }
 
-interface MessageCommandRunFunction {
+export interface MessageCommandRunFunction {
     (message: Message, commandName: string): void;
 }
 
