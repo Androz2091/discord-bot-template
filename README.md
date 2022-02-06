@@ -38,3 +38,50 @@ All configuration for this template can be made in the `.env` file found in the 
 ## Bugs or questions
 
 If you have any issue or bug with this bot, you can contact me using Discord, `Androz#2091`.
+
+## Detailed installation on Debian 11
+
+### Getting started
+sudo apt-get update
+
+### Install tools
+sudo apt-get install git gnupg2 wget curl software-properties-common build-essential ffmpeg
+
+### Install PostgreSQL
+sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+sudo apt-get update
+sudo apt-get -y install postgresql
+
+### Configure PostgreSQL
+su postgres
+psql
+CREATE DATABASE bot;
+CREATE USER my_bot WITH PASSWORD 'heythere';
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO my_bot;
+
+### Open PostgreSQL connections (optional)
+nano /etc/postgresql/13/main/postgresql.conf # listen_adresses = '*'
+nano /etc/postgresql/13/main/pg_hba.conf # host all all 0.0.0.0/0 md5
+
+### Install node
+curl -sL https://deb.nodesource.com/setup_17.x | sudo bash -
+sudo apt-get install nodejs
+sudo npm i -g pm2 yarn typescript
+
+### Create an account for the bot
+adduser bot
+su bot
+
+### Add your GitHub SSH KEY
+ssh-keygen -t ed25519 -C "androz2091@gmail.com" # this is an example, replace with your email
+cat .ssh/id_ed25519.pub # add the result at https://github.com/settings/keys
+
+## Clone the repository
+git clone git@github.com:Name/Repo
+
+## Finish the installation
+cd repo
+yarn
+yarn build
+pm2 start dist/index.js --name bot
