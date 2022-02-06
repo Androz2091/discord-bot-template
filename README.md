@@ -42,16 +42,26 @@ If you have any issue or bug with this bot, you can contact me using Discord, `A
 ## Detailed installation on Debian 11
 
 ### Getting started
+```sh
 sudo apt-get update
+```
 
 ### Install tools
+```sh
 sudo apt-get install git gnupg2 wget curl software-properties-common build-essential ffmpeg
+```
 
 ### Install PostgreSQL
+```sh
 sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+```
+```sh
 wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+```
+```sh
 sudo apt-get update
 sudo apt-get -y install postgresql
+```
 
 ### Configure PostgreSQL
 su postgres
