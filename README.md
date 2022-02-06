@@ -54,11 +54,7 @@ sudo apt-get install git gnupg2 wget curl software-properties-common build-essen
 ### Install PostgreSQL
 ```sh
 sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
-```
-```sh
 wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
-```
-```sh
 sudo apt-get update
 sudo apt-get -y install postgresql
 ```
