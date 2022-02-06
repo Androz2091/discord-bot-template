@@ -60,34 +60,51 @@ sudo apt-get -y install postgresql
 ```
 
 ### Configure PostgreSQL
+```sh
 su postgres
 psql
+```
+Commands to run on the PSQL shell:
+```sh
 CREATE DATABASE bot;
 CREATE USER my_bot WITH PASSWORD 'heythere';
 GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO my_bot;
+```
 
 ### Open PostgreSQL connections (optional)
+```sh
 nano /etc/postgresql/13/main/postgresql.conf # listen_adresses = '*'
 nano /etc/postgresql/13/main/pg_hba.conf # host all all 0.0.0.0/0 md5
+```
 
 ### Install node
+```
 curl -sL https://deb.nodesource.com/setup_17.x | sudo bash -
-sudo apt-get install nodejs
+sudo apt-get install nodejs -y
 sudo npm i -g pm2 yarn typescript
+```
 
 ### Create an account for the bot
+```sh
 adduser bot
 su bot
+```
 
 ### Add your GitHub SSH KEY
+```sh
 ssh-keygen -t ed25519 -C "androz2091@gmail.com" # this is an example, replace with your email
 cat .ssh/id_ed25519.pub # add the result at https://github.com/settings/keys
+```
 
 ## Clone the repository
+```sh
 git clone git@github.com:Name/Repo
+```
 
 ## Finish the installation
+```sh
 cd repo
 yarn
 yarn build
 pm2 start dist/index.js --name bot
+```
