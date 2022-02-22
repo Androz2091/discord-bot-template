@@ -50,9 +50,13 @@ client.on('messageCreate', (message) => {
 client.on('ready', () => {
     console.log(`Logged in as ${client.user!.tag}. Ready to serve ${client.users.cache.size} users in ${client.guilds.cache.size} servers 🚀`);
 
-    initializeDatabase().then(() => {
-        console.log('Database initialized 📦');
-    });
+    if (process.env.DB_NAME) {
+        initializeDatabase().then(() => {
+            console.log('Database initialized 📦');
+        });
+    } else {
+        console.log('Database not initialized, as no keys were specified 📦');
+    }
 });
 
 client.login(process.env.DISCORD_CLIENT_TOKEN);
