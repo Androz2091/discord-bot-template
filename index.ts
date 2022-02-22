@@ -33,6 +33,8 @@ client.on('interactionCreate', (interaction) => {
 client.on('messageCreate', (message) => {
 
     if (message.author.bot) return;
+
+    if (!process.env.COMMAND_PREFIX) return;
     
     const args = message.content.slice(process.env.COMMAND_PREFIX.length).split(/ +/);
     const commandName = args.shift();
