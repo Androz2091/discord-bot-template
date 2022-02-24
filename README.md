@@ -61,8 +61,7 @@ sudo apt-get -y install postgresql
 
 ### Configure PostgreSQL
 ```sh
-su postgres
-psql
+sudo -u postgres psql
 ```
 Commands to run on the PSQL shell:
 ```sh
