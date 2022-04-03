@@ -48,7 +48,7 @@ sudo apt-get update
 
 ### Install tools
 ```sh
-sudo apt-get install git gnupg2 wget curl software-properties-common build-essential ffmpeg
+sudo apt-get install git gnupg2 wget curl software-properties-common build-essential ffmpeg -y
 ```
 
 ### Install PostgreSQL
