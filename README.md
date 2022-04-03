@@ -72,8 +72,8 @@ GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO my_bot;
 
 ### Open PostgreSQL connections (optional)
 ```sh
-nano /etc/postgresql/13/main/postgresql.conf # listen_adresses = '*'
-nano /etc/postgresql/13/main/pg_hba.conf # host all all 0.0.0.0/0 md5
+nano /etc/postgresql/14/main/postgresql.conf # listen_adresses = '*'
+nano /etc/postgresql/14/main/pg_hba.conf # host all all 0.0.0.0/0 md5
 ```
 
 ### Install node
