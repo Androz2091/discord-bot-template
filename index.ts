@@ -4,6 +4,8 @@ config();
 import { initialize as initializeDatabase } from './database';
 import { loadMessageCommands, loadSlashCommands } from './commands';
 
+import { syncSheets } from './sheets';
+
 import { Client, Intents } from 'discord.js';
 export const client = new Client({
     intents: [
@@ -55,6 +57,10 @@ client.on('ready', () => {
     if (process.env.DB_NAME) {
         initializeDatabase().then(() => {
             console.log('Database initialized 📦');
+
+            if (process.env.SPREADSHEET_ID) {
+                syncSheets();
+            }
         });
     } else {
         console.log('Database not initialized, as no keys were specified 📦');

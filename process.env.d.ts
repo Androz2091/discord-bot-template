@@ -17,6 +17,8 @@ declare namespace NodeJS {
 
         GUILD_ID: string|undefined;
 
+        SPREADSHEET_ID: string|undefined;
+
         ENVIRONMENT: string;
     }
 }
