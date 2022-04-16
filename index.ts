@@ -57,13 +57,13 @@ client.on('ready', () => {
     if (process.env.DB_NAME) {
         initializeDatabase().then(() => {
             console.log('Database initialized 📦');
-
-            if (process.env.SPREADSHEET_ID) {
-                syncSheets();
-            }
         });
     } else {
         console.log('Database not initialized, as no keys were specified 📦');
+    }
+
+    if (process.env.SPREADSHEET_ID) {
+        syncSheets();
     }
 });
 
