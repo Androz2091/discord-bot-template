@@ -73,12 +73,12 @@ GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO my_bot;
 ### Open PostgreSQL connections (optional)
 ```sh
 nano /etc/postgresql/14/main/postgresql.conf # listen_adresses = '*'
-nano /etc/postgresql/14/main/pg_hba.conf # host all all 0.0.0.0/0 md5
+nano /etc/postgresql/14/main/pg_hba.conf # host all all 0.0.0.0/0 scram-sha-256
 ```
 
 ### Install node
 ```
-curl -sL https://deb.nodesource.com/setup_17.x | sudo bash -
+curl -sL https://deb.nodesource.com/setup_18.x | sudo bash -
 sudo apt-get install nodejs -y
 sudo npm i -g pm2 yarn typescript
 ```
