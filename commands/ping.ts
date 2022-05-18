@@ -1,4 +1,3 @@
-import { Message } from "discord.js";
 import { MessageCommandRunFunction } from "../commands";
 
 export const commands = [

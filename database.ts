@@ -1,4 +1,4 @@
-import { Entity, Column, createConnection, Connection, PrimaryGeneratedColumn } from "typeorm";
+import { Entity, Column, createConnection, PrimaryGeneratedColumn } from "typeorm";
 
 export const initialize = () => createConnection({
     type: 'postgres',

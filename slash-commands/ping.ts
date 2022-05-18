@@ -1,4 +1,3 @@
-import { CommandInteraction } from "discord.js";
 import { SlashCommandRunFunction } from "../commands";
 
 export const commands = [

@@ -1,5 +1,4 @@
-import { APIApplicationCommand } from "discord-api-types";
-import { Client, ApplicationCommand, ApplicationCommandData, CommandInteraction, Message, ChatInputApplicationCommandData } from "discord.js";
+import { Client, ApplicationCommand, ApplicationCommandData, CommandInteraction, Message, ChatInputApplicationCommandData, ContextMenuInteraction } from "discord.js";
 import { Collection } from '@discordjs/collection';
 import { readdirSync } from "fs";
 
@@ -42,7 +41,7 @@ export const synchronizeSlashCommands = async (client: Client, commands: ChatInp
         const newCommand = updatedCommand;
         const previousCommand = currentCommands.find((c) => c.name === updatedCommand.name);
         let modified = false;
-        if (previousCommand!.description !== newCommand.description) modified = true;
+        if (previousCommand?.description !== newCommand?.description) modified = true;
         if (!ApplicationCommand.optionsEqual(previousCommand!.options ?? [], newCommand.options ?? [])) modified = true;
         if (modified) {
             await previousCommand!.edit(newCommand as unknown as ApplicationCommandData);
@@ -71,6 +70,10 @@ export interface MessageCommandRunFunction {
     (message: Message, commandName: string): void;
 }
 
+export interface ContextMenuRunFunction {
+    (interaction: ContextMenuInteraction, contextMenuName: string): void;
+}
+
 export const loadSlashCommands = (client: Client) => {
     const commands = new Collection<string, SlashCommandRunFunction>();
     const commandsData: ChatInputApplicationCommandData[] = [];
@@ -91,12 +94,10 @@ export const loadSlashCommands = (client: Client) => {
         console.log(`No slash commands found`);
     }
 
-    synchronizeSlashCommands(client, commandsData, {
-        debug: true,
-        guildId: process.env.GUILD_ID
-    });
-
-    return commands;
+    return {
+        slashCommands: commands,
+        slashCommandsData: commandsData
+    };
 }
 
 export const loadMessageCommands = (client: Client) => {
@@ -118,4 +119,30 @@ export const loadMessageCommands = (client: Client) => {
     }
 
     return commands;
+}
+
+export const loadContextMenus = (client: Client) => {
+    const contextMenus = new Collection<string, ContextMenuRunFunction>();
+    const contextMenusData: ChatInputApplicationCommandData[] = [];
+
+    try {
+        readdirSync(`${__dirname}/context-menus`).forEach(file => {
+            if (file.endsWith('.js')) {
+                const contextMenu = require(`${__dirname}/context-menus/${file}`);
+                if (!contextMenu.contextMenus) return console.log(`${file} has no menus`);
+                contextMenusData.push(...contextMenu.contextMenus);
+                contextMenu.contextMenus.forEach((contextMenuData: ChatInputApplicationCommandData) => {
+                    contextMenus.set(contextMenuData.name, contextMenu.run);
+                    console.log(`Loaded context menu ${contextMenuData.name}`);
+                });
+            }
+        });
+    } catch {
+        console.log(`No context menus found`);
+    }
+
+    return {
+        contextMenus,
+        contextMenusData
+    };
 };

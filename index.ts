@@ -2,11 +2,12 @@ import { config } from 'dotenv';
 config();
 
 import { initialize as initializeDatabase } from './database';
-import { loadMessageCommands, loadSlashCommands } from './commands';
+import { loadContextMenus, loadMessageCommands, loadSlashCommands, synchronizeSlashCommands } from './commands';
 
 import { syncSheets } from './sheets';
 
 import { Client, Intents } from 'discord.js';
+import { errorEmbed } from './util';
 export const client = new Client({
     intents: [
         Intents.FLAGS.GUILDS,
@@ -14,21 +15,28 @@ export const client = new Client({
     ]
 });
 
-const slashCommands = loadSlashCommands(client);
+const { slashCommands, slashCommandsData } = loadSlashCommands(client);
+const { contextMenus, contextMenusData } = loadContextMenus(client);
 const messageCommands = loadMessageCommands(client);
 
-client.on('interactionCreate', (interaction) => {
+synchronizeSlashCommands(client, [...slashCommandsData, ...contextMenusData], {
+    debug: true,
+    guildId: process.env.GUILD_ID
+});
 
-    if (!interaction.isCommand()) return;
+client.on('interactionCreate', async (interaction) => {
 
-    const run = slashCommands.get(interaction.commandName);
-
-    if (!run) {
-        interaction.reply('Unknown command');
-        return;
+    if (interaction.isCommand()) {
+        const run = slashCommands.get(interaction.commandName);
+        if (!run) return void interaction.reply(errorEmbed('Unknown command'));
+        run(interaction, interaction.commandName);
     }
 
-    run(interaction, interaction.commandName);
+    else if (interaction.isContextMenu()) {
+        const run = contextMenus.get(interaction.commandName);
+        if (!run) return void interaction.reply(errorEmbed('Unknown context menu'));
+        run(interaction, interaction.commandName);
+    }
 
 });
 
