@@ -10,5 +10,8 @@
     "strict": true,
     "skipLibCheck": true,
     "outDir": "dist"
-  }
+  },
+  "include": [
+    "src/**/*"
+  ]
 }

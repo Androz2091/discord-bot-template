@@ -1,4 +1,4 @@
-import { SlashCommandRunFunction } from "../commands";
+import { SlashCommandRunFunction } from "../handlers/commands";
 
 export const commands = [
     {

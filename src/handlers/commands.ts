@@ -1,6 +1,7 @@
 import { Client, ApplicationCommand, ApplicationCommandData, CommandInteraction, Message, ChatInputApplicationCommandData, ContextMenuInteraction } from "discord.js";
 import { Collection } from '@discordjs/collection';
 import { readdirSync } from "fs";
+import { join } from "path";
 
 interface SynchronizeSlashCommandOptions {
     guildId?: null|string;
@@ -79,9 +80,9 @@ export const loadSlashCommands = (client: Client) => {
     const commandsData: ChatInputApplicationCommandData[] = [];
     
     try {
-        readdirSync(`${__dirname}/slash-commands`).forEach(file => {
+        readdirSync(join(__dirname, '..', 'slash-commands')).forEach(file => {
             if (file.endsWith('.js')) {
-                const command = require(`${__dirname}/slash-commands/${file}`);
+                const command = require(join(__dirname, '..', 'slash-commands', file));
                 if (!command.commands) return console.log(`${file} has no commands`);
                 commandsData.push(...command.commands);
                 command.commands.forEach((commandData: ChatInputApplicationCommandData) => {
@@ -104,9 +105,9 @@ export const loadMessageCommands = (client: Client) => {
     const commands = new Collection<string, MessageCommandRunFunction>();
     
     try {
-        readdirSync(`${__dirname}/commands`).forEach(file => {
+        readdirSync(join(__dirname, '..', 'commands')).forEach(file => {
             if (file.endsWith('.js')) {
-                const command = require(`${__dirname}/commands/${file}`);
+                const command = require(join(__dirname, '..', 'commands', file));
                 if (!command.commands) return console.log(`${file} has no commands`);
                 command.commands.forEach((commandName: string) => {
                     commands.set(commandName, command.run);
@@ -126,9 +127,9 @@ export const loadContextMenus = (client: Client) => {
     const contextMenusData: ChatInputApplicationCommandData[] = [];
 
     try {
-        readdirSync(`${__dirname}/context-menus`).forEach(file => {
+        readdirSync(join(__dirname, '..', 'context-menus')).forEach(file => {
             if (file.endsWith('.js')) {
-                const contextMenu = require(`${__dirname}/context-menus/${file}`);
+                const contextMenu = require(join(__dirname, '..', 'context-menus', file));
                 if (!contextMenu.contextMenus) return console.log(`${file} has no menus`);
                 contextMenusData.push(...contextMenu.contextMenus);
                 contextMenu.contextMenus.forEach((contextMenuData: ChatInputApplicationCommandData) => {

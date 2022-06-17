@@ -2,12 +2,13 @@ import { config } from 'dotenv';
 config();
 
 import { initialize as initializeDatabase } from './database';
-import { loadContextMenus, loadMessageCommands, loadSlashCommands, synchronizeSlashCommands } from './commands';
+import { loadContextMenus, loadMessageCommands, loadSlashCommands, synchronizeSlashCommands } from './handlers/commands';
 
-import { syncSheets } from './sheets';
+import { syncSheets } from './integrations/sheets';
 
 import { Client, Intents } from 'discord.js';
 import { errorEmbed } from './util';
+import { loadTasks } from './handlers/tasks';
 export const client = new Client({
     intents: [
         Intents.FLAGS.GUILDS,
@@ -18,6 +19,7 @@ export const client = new Client({
 const { slashCommands, slashCommandsData } = loadSlashCommands(client);
 const { contextMenus, contextMenusData } = loadContextMenus(client);
 const messageCommands = loadMessageCommands(client);
+loadTasks(client);
 
 synchronizeSlashCommands(client, [...slashCommandsData, ...contextMenusData], {
     debug: true,

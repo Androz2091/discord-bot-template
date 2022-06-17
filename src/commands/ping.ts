@@ -1,4 +1,4 @@
-import { MessageCommandRunFunction } from "../commands";
+import { MessageCommandRunFunction } from "../handlers/commands";
 
 export const commands = [
     'ping'
