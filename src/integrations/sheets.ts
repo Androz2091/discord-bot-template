@@ -1,10 +1,11 @@
 import { google } from 'googleapis';
 import { parse } from 'date-format-parse';
+import { join } from 'path';
 
 const scopes = ['https://www.googleapis.com/auth/spreadsheets.readonly'];
 
 const auth = new google.auth.GoogleAuth({
-    keyFilename: './google-creds.json',
+    keyFilename: join(__dirname, '..', '..', 'google-creds.json'),
     scopes
 });
 
