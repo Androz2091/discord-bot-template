@@ -1,7 +1,7 @@
 export const crons = [
-    '*/5 * * * *'
+    '0 0 1 * * *'
 ];
 
 export const run = async () => {
-    console.log('ping!');
+    console.log('Ping! It\'s 1 AM');
 };
