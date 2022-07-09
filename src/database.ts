@@ -34,7 +34,7 @@ export const Postgres = new DataSource({
     synchronize: process.env.ENVIRONMENT === 'development',
 });
 
-export const initialize = Postgres.initialize().then(() => {
+export const initialize = () => Postgres.initialize().then(() => {
     if (process.env.ADMINJS_PORT) {
         const app = express();
         const admin = new AdminJS({
