@@ -1,4 +1,4 @@
-import { ContextMenuInteraction } from "discord.js";
+import { ContextMenuCommandInteraction } from "discord.js";
 import { ContextMenuRunFunction } from "../handlers/commands";
 
 export const contextMenus = [
@@ -8,7 +8,7 @@ export const contextMenus = [
     }
 ];
 
-export const run: ContextMenuRunFunction = async (interaction: ContextMenuInteraction) => {
+export const run: ContextMenuRunFunction = async (interaction: ContextMenuCommandInteraction) => {
 
     interaction.reply(`🏓 Pong! My latency is currently \`${interaction.client.ws.ping}ms\`.`);
 

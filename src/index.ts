@@ -6,13 +6,13 @@ import { loadContextMenus, loadMessageCommands, loadSlashCommands, synchronizeSl
 
 import { syncSheets } from './integrations/sheets';
 
-import { Client, Intents } from 'discord.js';
+import { Client, IntentsBitField } from 'discord.js';
 import { errorEmbed } from './util';
 import { loadTasks } from './handlers/tasks';
 export const client = new Client({
     intents: [
-        Intents.FLAGS.GUILDS,
-        Intents.FLAGS.GUILD_MESSAGES
+        IntentsBitField.Flags.Guilds,
+        IntentsBitField.Flags.GuildMessages
     ]
 });
 
@@ -28,13 +28,13 @@ synchronizeSlashCommands(client, [...slashCommandsData, ...contextMenusData], {
 
 client.on('interactionCreate', async (interaction) => {
 
-    if (interaction.isCommand()) {
+    if (interaction.isChatInputCommand()) {
         const run = slashCommands.get(interaction.commandName);
         if (!run) return void interaction.reply(errorEmbed('Unknown command'));
         run(interaction, interaction.commandName);
     }
 
-    else if (interaction.isContextMenu()) {
+    else if (interaction.isContextMenuCommand()) {
         const run = contextMenus.get(interaction.commandName);
         if (!run) return void interaction.reply(errorEmbed('Unknown context menu'));
         run(interaction, interaction.commandName);

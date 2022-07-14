@@ -1,4 +1,4 @@
-import { Client, ApplicationCommand, ApplicationCommandData, CommandInteraction, Message, ChatInputApplicationCommandData, ContextMenuInteraction } from "discord.js";
+import { Client, ApplicationCommand, ApplicationCommandData, ChatInputApplicationCommandData } from "discord.js";
 import { Collection } from '@discordjs/collection';
 import { readdirSync } from "fs";
 import { join } from "path";
