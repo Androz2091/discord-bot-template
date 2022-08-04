@@ -30,7 +30,7 @@ export const loadTasks = (client: Client) => {
 
                 tasks.set(task.name, task);
                 tasksData.push(task);
-                console.log(`Loaded task ${task.name}`);
+                console.log(`Loaded task ${file.split('.')[0]}`);
             }
         });
     } catch {
