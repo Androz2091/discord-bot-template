@@ -20,5 +20,9 @@ declare namespace NodeJS {
         SPREADSHEET_ID: string|undefined;
 
         ENVIRONMENT: string;
+
+        ADMINJS_PORT: number|undefined;
+        ADMINJS_COOKIE_HASH: string|undefined;
+        ADMINJS_PASSWORD: string|undefined;
     }
 }
