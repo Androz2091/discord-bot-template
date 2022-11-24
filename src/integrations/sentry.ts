@@ -1,4 +1,4 @@
-import Sentry from "@sentry/node";
+import * as Sentry from "@sentry/node";
 
 if (process.env.SENTRY_API_KEY) {
     Sentry.init({
