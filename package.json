@@ -11,6 +11,7 @@
     "@adminjs/fastify": "^3.0.1",
     "@adminjs/typeorm": "^4.0.0",
     "@fastify/static": "^6.5.0",
+    "@sentry/integrations": "^7.21.1",
     "@sentry/node": "^7.21.1",
     "@sentry/tracing": "^7.21.1",
     "adminjs": "^6.6.3",

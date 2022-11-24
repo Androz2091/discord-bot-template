@@ -1,7 +1,7 @@
 import { config } from 'dotenv';
 config();
 
-import './integrations/sentry';
+import './sentry';
 
 import { initialize as initializeDatabase } from './database';
 import { loadContextMenus, loadMessageCommands, loadSlashCommands, synchronizeSlashCommands } from './handlers/commands';
