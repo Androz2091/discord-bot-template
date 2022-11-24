@@ -35,6 +35,8 @@ All configuration for this template can be made in the `.env` file found in the 
   
 `ENVIRONMENT:` Can be `ENVIRONMENT` or `PRODUCTION`. Defines whether some scripts or things should be run or not. For example, the database schemas will not be modified in production, even to synchronize them, because we may loose data.
 
+`SENTRY_API_KEY:` This is optional. If you want to use [Sentry](https://sentry.io) to monitor your bot, you can put your API key here. Otherwise, leave empty.
+
 ## Bugs or questions
 
 If you have any issue or bug with this bot, you can contact me using Discord, `Androz#2091`.

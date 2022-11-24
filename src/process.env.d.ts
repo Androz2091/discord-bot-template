@@ -24,5 +24,7 @@ declare namespace NodeJS {
         ADMINJS_PORT: number|undefined;
         ADMINJS_COOKIE_HASH: string|undefined;
         ADMINJS_PASSWORD: string|undefined;
+
+        SENTRY_API_KEY: string|undefined;
     }
 }
