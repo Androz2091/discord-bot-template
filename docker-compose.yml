@@ -1,0 +1,44 @@
+version: '3'
+
+services:
+  # This is the Bot!
+  bot:
+    container_name: "discord-bot-template"
+    # build from the Dockerfile
+    build: .
+    image: discord-bot-template
+    # ports to expose to your machine (and others) -
+    # again, overwrites the Dockerfile so you can run it on other ports locally if you choose.
+    # e.g: "port to access on your machine:port the container is exposing"
+    ports:
+      - "80:80"
+      # you can add the adminjs port here
+    volumes:
+      - ./:/bot/
+    # links your bot to the database (networking wise)
+    links:
+      - postgres
+    # Make sure your database starts up before the bot
+    # Word of caution: this only makes the container start first, it doesn't wait until the container has finished starting up.
+    depends_on:
+      - postgres
+  
+  # This builds you a database
+  postgres:
+    image: postgres:12
+    environment:
+      # This is the user your bot will login to the database with
+      POSTGRES_USER: postgres
+      # This is the database name which will get created automagically for you.
+      POSTGRES_DB: discord_bot
+      # This is the port the database will use to communicate on.
+      POSTGRES_PORT: '5432'
+    # ports to expose to your machine (and others)
+    ports:
+      - "5432:5432"
+    # This allows the database to keep its data between being destroyed and re-created
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
