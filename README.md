@@ -10,8 +10,8 @@ Your bot has been delivered! Here is the repository with the source code. As a r
 
 You can install and host this bot on your own server. Here are the main steps:
 
-* Download and install [Node.js](https://nodejs.org) v16 or higher.
-* Download and install [PostgreSQL](https://www.postgresql.org) v13 or higher.
+* Download and install [Node.js](https://nodejs.org) v18 or higher.
+* Download and install [PostgreSQL](https://www.postgresql.org) v15 or higher.
 * Create a new database and a new role that has access to the database.
 * Install the dependencies of the project by running `yarn install`.
 * Run `yarn build` to get the JavaScript output of the project.
@@ -74,8 +74,8 @@ GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO my_bot;
 
 ### Open PostgreSQL connections (optional)
 ```sh
-nano /etc/postgresql/14/main/postgresql.conf # listen_adresses = '*'
-nano /etc/postgresql/14/main/pg_hba.conf # host all all 0.0.0.0/0 scram-sha-256
+nano /etc/postgresql/15/main/postgresql.conf # listen_adresses = '*'
+nano /etc/postgresql/15/main/pg_hba.conf # host all all 0.0.0.0/0 scram-sha-256
 ```
 
 ### Install node
