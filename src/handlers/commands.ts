@@ -42,7 +42,7 @@ export const synchronizeSlashCommands = async (client: Client, commands: ChatInp
         const previousCommand = currentCommands.find((c) => c.name === updatedCommand.name);
         let modified = false;
         if (previousCommand?.description !== newCommand?.description) modified = true;
-        if (!ApplicationCommand.optionsEqual(previousCommand!.options ?? [], newCommand.options ?? [])) modified = true;
+        if (!ApplicationCommand.optionsEqual(previousCommand!.options ?? [], newCommand.options ? Array.from(newCommand.options) : [])) modified = true;
         if (modified) {
             await previousCommand!.edit(newCommand as unknown as ApplicationCommandData);
             updatedCommandCount++;
