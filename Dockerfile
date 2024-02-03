@@ -1,17 +1,23 @@
-FROM node:18.04
+# Base image: Node LTS
+FROM node:20.4.0-alpine
 
-ENV WORK_DIR=/bot
+# Create application directory and move there
+WORKDIR /app
 
-# create the directories to load the bot code into
-RUN mkdir -p $WORK_DIR
+# Copy package.json and yarn.lock from the host to the container
+COPY package.json yarn.lock ./
 
-# Tell docker where our working directory lives
-WORKDIR $WORK_DIR
+# Install dependencies
+RUN yarn install
 
-# Copy the files over
-COPY . $WORK_DIR
+# Copy the rest of the application files
+COPY . .
 
-# Expose port 80 so it can talk to the world
-EXPOSE 80
+# Build the app
+RUN yarn run build
 
-ENTRYPOINT $WORK_DIR/build.sh
+# Expose the port
+EXPOSE 3000
+
+# Start the server
+CMD ["yarn", "start"]

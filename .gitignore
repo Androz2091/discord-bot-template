@@ -6,3 +6,6 @@ node_modules
 
 # Env
 .env
+
+# Google Credentials
+google-creds.json
