@@ -1,15 +1,27 @@
 import { config } from 'dotenv';
 config();
 
-import './sentry';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 
-import { initialize as initializeDatabase } from './database';
-import { loadContextMenus, loadMessageCommands, loadSlashCommands, synchronizeSlashCommands } from './handlers/commands';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
-import { syncSheets } from './integrations/sheets';
+global.__rootdir__ = __dirname || process.cwd();
+global.__rootdir__ = __dirname || process.cwd();
+declare global {
+    var __rootdir__: string;
+}
+
+import './sentry.js';
+
+import { initialize as initializeDatabase } from './database.js';
+import { loadContextMenus, loadMessageCommands, loadSlashCommands, synchronizeSlashCommands } from './handlers/commands.js';
+
+import { syncSheets } from './integrations/sheets.js';
 
 import { Client, IntentsBitField } from 'discord.js';
-import { loadTasks } from './handlers/tasks';
+import { loadTasks } from './handlers/tasks.js';
 export const client = new Client({
     intents: [
         IntentsBitField.Flags.Guilds,

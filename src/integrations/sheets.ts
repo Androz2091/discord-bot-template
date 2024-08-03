@@ -2,6 +2,12 @@ import { google } from 'googleapis';
 import { parse } from 'date-format-parse';
 import { join } from 'path';
 
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
 const scopes = ['https://www.googleapis.com/auth/spreadsheets.readonly'];
 
 const auth = new google.auth.GoogleAuth({

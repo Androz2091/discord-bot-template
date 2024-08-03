@@ -1,4 +1,5 @@
-import { SlashCommandRunFunction } from "../handlers/commands";
+import { CommandInteraction } from "discord.js";
+import { SlashCommandRunFunction } from "../handlers/commands.js";
 
 export const commands = [
     {
@@ -10,5 +11,5 @@ export const commands = [
 export const run: SlashCommandRunFunction = async (interaction) => {
 
     interaction.reply(`🏓 Pong! My latency is currently \`${interaction.client.ws.ping}ms\`.`);
-    
+
 }
