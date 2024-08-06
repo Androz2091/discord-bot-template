@@ -6,7 +6,11 @@ import AdminJS from 'adminjs';
 import AdminJSFastify from '@adminjs/fastify';
 import fastify from "fastify";
 import fastifyStatic from "@fastify/static";
-import { join } from "path";
+import { join, dirname } from "path";
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 Resource.validate = validate;
 AdminJS.registerAdapter({ Database, Resource });
