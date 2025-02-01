@@ -1,13 +1,13 @@
-import { Entity, Column, DataSource, PrimaryGeneratedColumn, BaseEntity } from "typeorm";
 import { Database, Resource } from "@adminjs/typeorm";
 import { validate } from "class-validator";
+import { BaseEntity, Column, DataSource, Entity, PrimaryGeneratedColumn } from "typeorm";
 
-import AdminJS from "adminjs";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 import AdminJSFastify from "@adminjs/fastify";
-import fastify from "fastify";
 import fastifyStatic from "@fastify/static";
-import { join, dirname } from "node:path";
-import { fileURLToPath } from "url";
+import AdminJS from "adminjs";
+import fastify from "fastify";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);

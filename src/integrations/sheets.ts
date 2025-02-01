@@ -1,5 +1,5 @@
-import { google } from "googleapis";
 import { join } from "node:path";
+import { google } from "googleapis";
 
 const scopes = ["https://www.googleapis.com/auth/spreadsheets.readonly"];
 
@@ -13,7 +13,7 @@ export interface ParameterData {
 	value: string;
 }
 
-export let parameters: ParameterData[] = [];
+export const parameters: ParameterData[] = [];
 
 export const getParameters = () => parameters;
 
@@ -30,6 +30,7 @@ export const syncSheets = () => {
 				// biome-ignore lint: sheets is going to be filled
 				const parameterData = res.data.sheets![0]!.data![0].rowData;
 				const newParameters: ParameterData[] = [];
+				// biome-ignore lint: sheets is going to be filled
 				for (let i = 1; i < parameterData!.length; i++) {
 					// biome-ignore lint: sheets is going to be filled
 					const row = parameterData![i].values!;

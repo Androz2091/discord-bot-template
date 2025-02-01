@@ -1,15 +1,15 @@
-import {
-	Collection,
-	Client,
-	ApplicationCommand,
-	ApplicationCommandData,
-	CommandInteraction,
-	Message,
-	ChatInputApplicationCommandData,
-	ContextMenuCommandInteraction,
-} from "discord.js";
 import { readdirSync } from "node:fs";
 import { join } from "node:path";
+import {
+	ApplicationCommand,
+	type ApplicationCommandData,
+	type ChatInputApplicationCommandData,
+	type Client,
+	Collection,
+	type CommandInteraction,
+	type ContextMenuCommandInteraction,
+	type Message,
+} from "discord.js";
 
 interface SynchronizeSlashCommandOptions {
 	guildId?: null | string;
@@ -26,24 +26,26 @@ export const synchronizeSlashCommands = async (
 	const ready = client.readyAt ? Promise.resolve() : new Promise((resolve) => client.once("ready", resolve));
 	await ready;
 	const currentCommands = options.guildId
-		? await client.application!.commands.fetch({
+		? // biome-ignore lint: client.application is always defined
+			await client.application!.commands.fetch({
 				guildId: options.guildId,
 			})
-		: await client.application!.commands.fetch();
+		: // biome-ignore lint: client.application is always defined
+			await client.application!.commands.fetch();
 
-	log(`Synchronizing commands...`);
+	log("Synchronizing commands...");
 	log(`Currently ${currentCommands.size} commands.`);
 
 	const newCommands = commands.filter((command) => !currentCommands.some((c) => c.name === command.name));
-	for (let newCommand of newCommands) {
-		if (options.guildId) await client.application!.commands.create(newCommand, options.guildId);
-		else await client.application!.commands.create(newCommand);
+	for (const newCommand of newCommands) {
+		if (options.guildId) await client.application?.commands.create(newCommand, options.guildId);
+		else await client.application?.commands.create(newCommand);
 	}
 
 	log(`Created ${newCommands.length} commands!`);
 
 	const deletedCommands = currentCommands.filter((command) => !commands.some((c) => c.name === command.name)).toJSON();
-	for (let deletedCommand of deletedCommands) {
+	for (const deletedCommand of deletedCommands) {
 		await deletedCommand.delete();
 	}
 
@@ -51,21 +53,21 @@ export const synchronizeSlashCommands = async (
 
 	const updatedCommands = commands.filter((command) => currentCommands.some((c) => c.name === command.name));
 	let updatedCommandCount = 0;
-	for (let updatedCommand of updatedCommands) {
+	for (const updatedCommand of updatedCommands) {
 		const newCommand = updatedCommand;
 		const previousCommand = currentCommands.find((c) => c.name === updatedCommand.name);
 		let modified = false;
 		if (previousCommand?.description !== newCommand?.description) modified = true;
-		if (!ApplicationCommand.optionsEqual(previousCommand!.options ?? [], newCommand.options ? Array.from(newCommand.options) : [])) modified = true;
+		if (!ApplicationCommand.optionsEqual(previousCommand?.options ?? [], newCommand.options ? Array.from(newCommand.options) : [])) modified = true;
 		if (modified) {
-			await previousCommand!.edit(newCommand as unknown as ApplicationCommandData);
+			await previousCommand?.edit(newCommand as unknown as ApplicationCommandData);
 			updatedCommandCount++;
 		}
 	}
 
 	log(`Updated ${updatedCommandCount} commands!`);
 
-	log(`Commands synchronized!`);
+	log("Commands synchronized!");
 
 	return {
 		currentCommandCount: currentCommands.size,
@@ -75,17 +77,11 @@ export const synchronizeSlashCommands = async (
 	};
 };
 
-export interface SlashCommandRunFunction {
-	(interaction: CommandInteraction, commandName: string): void;
-}
+export type SlashCommandRunFunction = (interaction: CommandInteraction, commandName: string) => void;
 
-export interface MessageCommandRunFunction {
-	(message: Message, commandName: string): void;
-}
+export type MessageCommandRunFunction = (message: Message, commandName: string) => void;
 
-export interface ContextMenuRunFunction {
-	(interaction: ContextMenuCommandInteraction, contextMenuName: string): void;
-}
+export type ContextMenuRunFunction = (interaction: ContextMenuCommandInteraction, contextMenuName: string) => void;
 
 export const loadSlashCommands = async (client: Client) => {
 	const commands = new Collection<string, SlashCommandRunFunction>();
@@ -110,7 +106,7 @@ export const loadSlashCommands = async (client: Client) => {
 		}
 	} catch (e) {
 		console.error(e);
-		console.log(`No slash commands found`);
+		console.log("No slash commands found");
 	}
 
 	return {
@@ -140,7 +136,7 @@ export const loadMessageCommands = async (client: Client) => {
 		}
 	} catch (e) {
 		console.error(e);
-		console.log(`No message commands found`);
+		console.log("No message commands found");
 	}
 
 	return commands;
@@ -169,7 +165,7 @@ export const loadContextMenus = async (client: Client) => {
 		}
 	} catch (e) {
 		console.error(e);
-		console.log(`No context menus found`);
+		console.log("No context menus found");
 	}
 
 	return {

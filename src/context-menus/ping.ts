@@ -1,5 +1,5 @@
-import { ContextMenuCommandInteraction } from "discord.js";
-import { ContextMenuRunFunction } from "../handlers/commands.js";
+import type { ContextMenuCommandInteraction } from "discord.js";
+import type { ContextMenuRunFunction } from "../handlers/commands.js";
 
 export const contextMenus = [
 	{

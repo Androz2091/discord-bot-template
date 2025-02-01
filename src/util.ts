@@ -22,21 +22,22 @@ export const generateId = () => {
 	return Math.random().toString(36).slice(2, 12);
 };
 
-export const generateEmbeds = (
+export const generateEmbeds = <T>(
 	{
 		entries,
 		generateEmbed,
 		generateEntry,
 	}: {
-		entries: any[];
+		entries: T[];
 		generateEmbed: (idx: number) => EmbedBuilder;
-		generateEntry: (entry: any) => string;
+		generateEntry: (entry: T) => string;
 	},
 	threshold = 2050,
 ) => {
 	const embeds: EmbedBuilder[] = [];
 	entries.forEach((entry) => {
 		const entryContent = generateEntry(entry);
+		// biome-ignore lint: embeds is going to be filled
 		const lastEmbedTooLong = !embeds.length || embeds.at(-1)!.data.description!.length + entryContent.length >= threshold;
 		if (lastEmbedTooLong) {
 			const newEmbed = generateEmbed(embeds.length);

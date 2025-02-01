@@ -1,7 +1,7 @@
-import { Collection, type Client } from "discord.js";
-import { readdirSync } from "fs";
+import { readdirSync } from "node:fs";
 import { join } from "node:path";
 import { CronJob } from "cron";
+import { type Client, Collection } from "discord.js";
 
 export interface TaskData {
 	name: string;
