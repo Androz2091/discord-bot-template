@@ -1,4 +1,4 @@
-# Discord Bot Template
+# Custom Discord Bot - by Androz2091
 
 Your bot has been delivered! Here is the repository with the source code.
 
