@@ -2,15 +2,11 @@ import { Database, Resource } from "@adminjs/typeorm";
 import { validate } from "class-validator";
 import { BaseEntity, Column, DataSource, Entity, PrimaryGeneratedColumn } from "typeorm";
 
-import { dirname, join } from "node:path";
-import { fileURLToPath } from "node:url";
+import { join } from "node:path";
 import AdminJSFastify from "@adminjs/fastify";
 import fastifyStatic from "@fastify/static";
 import AdminJS from "adminjs";
 import fastify from "fastify";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
 
 Resource.validate = validate;
 AdminJS.registerAdapter({ Database, Resource });
@@ -31,18 +27,23 @@ export class User extends BaseEntity {
 
 const entities = [User];
 
-export const Postgres = new DataSource({
-	type: "postgres",
-	host: process.env.DB_HOST,
-	database: process.env.DB_NAME,
-	username: process.env.DB_USERNAME,
-	password: process.env.DB_PASSWORD,
-	entities,
-	synchronize: process.env.ENVIRONMENT === "development",
+let resolveInitialize: (value: DataSource) => void;
+export const getPostgres: Promise<DataSource> = new Promise((resolve) => {
+	resolveInitialize = resolve;
 });
 
-export const initialize = () =>
+export const initialize = () => {
+	const Postgres = new DataSource({
+		type: "postgres",
+		host: process.env.DB_HOST,
+		database: process.env.DB_NAME,
+		username: process.env.DB_USERNAME,
+		password: process.env.DB_PASSWORD,
+		entities,
+		synchronize: process.env.ENVIRONMENT === "development",
+	})
 	Postgres.initialize().then(async () => {
+		resolveInitialize(Postgres);
 		if (process.env.ADMINJS_PORT) {
 			const app = fastify();
 			const admin = new AdminJS({
@@ -52,7 +53,7 @@ export const initialize = () =>
 				resources: entities,
 			});
 			app.register(fastifyStatic, {
-				root: join(__dirname, "../public"),
+				root: join(import.meta.dirname, "../public"),
 				prefix: "/public/",
 			});
 			await AdminJSFastify.buildAuthenticatedRouter(
@@ -82,3 +83,5 @@ export const initialize = () =>
 			);
 		}
 	});
+	return getPostgres;
+}
