@@ -10,20 +10,26 @@ export interface TaskData {
     run(): void;
 }
 
-export const loadTasks = (client: Client) => {
+export const loadTasks = async (client: Client) => {
     const tasks = new Collection<string, TaskData>();
     const tasksData: TaskData[] = [];
 
     try {
-        readdirSync(join(__dirname, '..', 'tasks')).forEach(file => {
+        const tasksPath = join(import.meta.dirname, '..', 'tasks');
+        const files = readdirSync(tasksPath);
+        for (const file of files) {
             if (file.endsWith('.js')) {
-                const task = require(join(__dirname, '..', 'tasks', file));
-                if (!task.crons) return console.log(`${file} has no task`);
+                const taskModule = await import(join(tasksPath, file));
+                const taskOriginal = taskModule.default || taskModule;
 
+                const task: TaskData = {
+                    ...taskOriginal,
+                    jobs: []
+                };
                 const taskName = file.split('.')[0];
 
                 task.jobs = [];
-                task.crons.forEach((cron: string) => {
+                taskOriginal.crons.forEach((cron: string) => {
                     task.jobs.push(new CronJob(cron, () => {
                         task.run();
                     }, null, true, 'America/Los_Angeles'));
@@ -33,8 +39,9 @@ export const loadTasks = (client: Client) => {
                 tasksData.push(task);
                 console.log(`Loaded task ${taskName}`);
             }
-        });
-    } catch {
+        }
+    } catch (e) {
+        console.error(e);
         console.log(`No task found`);
     }
 

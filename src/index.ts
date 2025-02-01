@@ -1,18 +1,6 @@
 import { config } from 'dotenv';
 config();
 
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-global.__rootdir__ = __dirname || process.cwd();
-global.__rootdir__ = __dirname || process.cwd();
-declare global {
-    var __rootdir__: string;
-}
-
 import './sentry.js';
 
 import { initialize as initializeDatabase } from './database.js';
@@ -29,8 +17,8 @@ export const client = new Client({
     ]
 });
 
-const { slashCommands, slashCommandsData } = loadSlashCommands(client);
-const { contextMenus, contextMenusData } = loadContextMenus(client);
+const { slashCommands, slashCommandsData } = await loadSlashCommands(client);
+const { contextMenus, contextMenusData } = await loadContextMenus(client);
 const messageCommands = loadMessageCommands(client);
 loadTasks(client);
 
@@ -57,19 +45,19 @@ client.on('interactionCreate', async (interaction) => {
 
 });
 
-client.on('messageCreate', (message) => {
+client.on('messageCreate', async (message) => {
 
     if (message.author.bot) return;
 
     if (!process.env.COMMAND_PREFIX) return;
-    
+
     const args = message.content.slice(process.env.COMMAND_PREFIX.length).split(/ +/);
     const commandName = args.shift();
 
     if (!commandName) return;
 
-    const run = messageCommands.get(commandName);
-    
+    const run = (await messageCommands).get(commandName);
+
     if (!run) return;
 
     run(message, commandName);

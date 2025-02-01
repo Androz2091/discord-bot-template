@@ -1,5 +1,5 @@
 # Base image: Node LTS
-FROM node:20.4.0-alpine
+FROM node:22-alpine3.20
 
 # Install pnpm
 RUN corepack enable

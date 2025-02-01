@@ -74,23 +74,29 @@ export interface ContextMenuRunFunction {
     (interaction: ContextMenuCommandInteraction, contextMenuName: string): void;
 }
 
-export const loadSlashCommands = (client: Client) => {
+export const loadSlashCommands = async (client: Client) => {
     const commands = new Collection<string, SlashCommandRunFunction>();
     const commandsData: ChatInputApplicationCommandData[] = [];
-    
+
     try {
-        readdirSync(join(__dirname, '..', 'slash-commands')).forEach(file => {
+        const commandsPath = join(import.meta.dirname, '..', 'slash-commands');
+        const files = readdirSync(commandsPath);
+        for (const file of files) {
             if (file.endsWith('.js')) {
-                const command = require(join(__dirname, '..', 'slash-commands', file));
-                if (!command.commands) return console.log(`${file} has no commands`);
-                commandsData.push(...command.commands);
-                command.commands.forEach((commandData: ChatInputApplicationCommandData) => {
-                    commands.set(commandData.name, command.run);
-                    console.log(`Loaded slash command ${commandData.name}`);
-                });
+                const commandModule = await import(join(commandsPath, file));
+                const command = commandModule.default || commandModule;
+                if (!command.commands) console.log(`${file} has no commands`);
+                else {
+                    commandsData.push(...command.commands);
+                    command.commands.forEach((commandData: ChatInputApplicationCommandData) => {
+                        commands.set(commandData.name, command.run);
+                        console.log(`Loaded slash command ${commandData.name}`);
+                    });
+                }
             }
-        });
-    } catch {
+        }
+    } catch (e) {
+        console.error(e);
         console.log(`No slash commands found`);
     }
 
@@ -100,44 +106,56 @@ export const loadSlashCommands = (client: Client) => {
     };
 }
 
-export const loadMessageCommands = (client: Client) => {
+export const loadMessageCommands = async (client: Client) => {
     const commands = new Collection<string, MessageCommandRunFunction>();
-    
+
     try {
-        readdirSync(join(__dirname, '..', 'commands')).forEach(file => {
+        const commandsPath = join(import.meta.dirname, '..', 'commands');
+        const files = readdirSync(commandsPath);
+        for (const file of files) {
             if (file.endsWith('.js')) {
-                const command = require(join(__dirname, '..', 'commands', file));
-                if (!command.commands) return console.log(`${file} has no commands`);
-                command.commands.forEach((commandName: string) => {
-                    commands.set(commandName, command.run);
-                    console.log(`Loaded message command ${commandName}`);
-                });
+                const commandModule = await import(join(commandsPath, file));
+                const command = commandModule.default || commandModule;
+                if (!command.commands) console.log(`${file} has no commands`);
+                else {
+                    command.commands.forEach((commandName: string) => {
+                        commands.set(commandName, command.run);
+                        console.log(`Loaded message command ${commandName}`);
+                    });
+                }
             }
-        });
-    } catch {
+        }
+    } catch (e) {
+        console.error(e);
         console.log(`No message commands found`);
     }
 
     return commands;
 }
 
-export const loadContextMenus = (client: Client) => {
+export const loadContextMenus = async (client: Client) => {
     const contextMenus = new Collection<string, ContextMenuRunFunction>();
     const contextMenusData: ChatInputApplicationCommandData[] = [];
 
     try {
-        readdirSync(join(__dirname, '..', 'context-menus')).forEach(file => {
+        const contextMenusPath = join(import.meta.dirname, '..', 'context-menus');
+        const files = readdirSync(contextMenusPath);
+        for (const file of files) {
             if (file.endsWith('.js')) {
-                const contextMenu = require(join(__dirname, '..', 'context-menus', file));
-                if (!contextMenu.contextMenus) return console.log(`${file} has no menus`);
-                contextMenusData.push(...contextMenu.contextMenus);
-                contextMenu.contextMenus.forEach((contextMenuData: ChatInputApplicationCommandData) => {
-                    contextMenus.set(contextMenuData.name, contextMenu.run);
-                    console.log(`Loaded context menu ${contextMenuData.name}`);
-                });
+                const contextMenuModule = await import(join(contextMenusPath, file));
+                const contextMenu = contextMenuModule.default || contextMenuModule;
+                if (!contextMenu.contextMenus) console.log(`${file} has no menus`);
+                else {
+                    contextMenusData.push(...contextMenu.contextMenus);
+                    contextMenu.contextMenus.forEach((contextMenuData: ChatInputApplicationCommandData) => {
+                        contextMenus.set(contextMenuData.name, contextMenu.run);
+                        console.log(`Loaded context menu ${contextMenuData.name}`);
+                    });
+                }
             }
-        });
-    } catch {
+        }
+    } catch (e) {
+        console.error(e);
         console.log(`No context menus found`);
     }
 
