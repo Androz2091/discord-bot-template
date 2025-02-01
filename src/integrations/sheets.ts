@@ -4,7 +4,7 @@ import { google } from "googleapis";
 const scopes = ["https://www.googleapis.com/auth/spreadsheets.readonly"];
 
 const auth = new google.auth.GoogleAuth({
-	keyFilename: join(__dirname, "..", "..", "google-creds.json"),
+	keyFilename: join(import.meta.dirname, "..", "..", "google-creds.json"),
 	scopes,
 });
 
