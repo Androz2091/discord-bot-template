@@ -8,6 +8,7 @@
   "scripts": {
     "start": "node dist/index.js",
     "build": "tsc",
+    "dev": "pnpm build && node dist/index.js",
     "format": "pnpm biome format --write src/",
     "lint": "pnpm biome lint src/",
     "check": "pnpm biome check src/"
@@ -15,7 +16,7 @@
   "dependencies": {
     "@adminjs/fastify": "^4.1.3",
     "@adminjs/typeorm": "^5.0.1",
-    "@fastify/static": "^8.0.4",
+    "@fastify/static": "^6.12.0",
     "@sentry/integrations": "^7.114.0",
     "@sentry/node": "^8.53.0",
     "@sentry/tracing": "^7.120.3",
